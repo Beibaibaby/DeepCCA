@@ -5,18 +5,28 @@ import numpy as np
 import torch
 
 
-def load_data(data_file):
+def load_data(t):
     """loads the data from the gzip pickled files, and converts to numpy arrays"""
     print('loading data ...')
-    f = gzip.open(data_file, 'rb')
-    train_set, valid_set, test_set = load_pickle(f)
-    f.close()
+    #f = gzip.open(data_file, 'rb')
+    #train_set, valid_set, test_set = load_pickle(f)
+    #f.close()
+    if t==1:
+        train = np.load('./brain_train.npy')
+        train_set_x = torch.from_numpy(train)
+        valid_set_x = torch.from_numpy(np.load('./brain_test.npy'))
+        test_set_x = torch.from_numpy(np.load('./brain_test.npy'))
 
-    train_set_x, train_set_y = make_tensor(train_set)
-    valid_set_x, valid_set_y = make_tensor(valid_set)
-    test_set_x, test_set_y = make_tensor(test_set)
+    if t==2:
+        train = np.load('./view2_train.npy')
+        train_set_x = torch.from_numpy(train)
+        valid_set_x = torch.from_numpy(np.load('./view2_test.npy'))
+        test_set_x = torch.from_numpy(np.load('./view2_test.npy'))
+    #train_set_x, train_set_y = make_tensor(train_set)
+    #valid_set_x, valid_set_y = make_tensor(valid_set)
+    #test_set_x, test_set_y = make_tensor(test_set)
 
-    return [(train_set_x, train_set_y), (valid_set_x, valid_set_y), (test_set_x, test_set_y)]
+    return [train_set_x, valid_set_x, test_set_x]
 
 
 def make_tensor(data_xy):
